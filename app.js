@@ -37,9 +37,8 @@ const MONTHLY_DATA = [
 
 // DOM Elements
 const elements = {
-    // Period selectors
+    // Period selector (month input)
     periodoMes: document.getElementById('periodoMes'),
-    periodoAnio: document.getElementById('periodoAnio'),
     periodoDisplay: document.getElementById('periodoDisplay'),
 
     // Inputs
@@ -122,13 +121,16 @@ function updateValue(element, value, isNegative = false) {
 }
 
 /**
- * Update period display
+ * Update period display from month input (type="month")
  */
 function updatePeriodDisplay() {
-    const mes = parseInt(elements.periodoMes.value);
-    const anio = elements.periodoAnio.value;
-    const monthName = MONTH_NAMES[mes - 1];
-    elements.periodoDisplay.innerHTML = `📅 Calculando: <strong>${monthName} ${anio}</strong>`;
+    const value = elements.periodoMes.value; // Format: "2025-11"
+    if (!value) return;
+
+    const [year, month] = value.split('-');
+    const monthIndex = parseInt(month) - 1;
+    const monthName = MONTH_NAMES[monthIndex];
+    elements.periodoDisplay.innerHTML = `📅 Calculando: <strong>${monthName} ${year}</strong>`;
 }
 
 /**
@@ -382,9 +384,8 @@ function initChart() {
  * Initialize the app
  */
 function init() {
-    // Period selector listeners
+    // Period selector listener
     elements.periodoMes.addEventListener('change', updatePeriodDisplay);
-    elements.periodoAnio.addEventListener('change', updatePeriodDisplay);
 
     // Apply button listener
     elements.btnAplicarAumento.addEventListener('click', applyIncrease);

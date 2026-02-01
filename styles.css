@@ -296,62 +296,61 @@ body {
     padding-right: var(--spacing-xs);
 }
 
-/* Period Selector */
+/* Period Selector - Calendar Style */
 .period-selector {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-    padding: var(--spacing-md);
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    flex-wrap: wrap;
-}
-
-.period-group {
-    display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
 }
 
-.period-group label {
-    font-size: 0.75rem;
+.period-selector>label {
+    font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    color: var(--text-secondary);
 }
 
-.period-group select {
+.period-selector input[type="month"] {
     background: var(--bg-tertiary);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
     color: var(--text-primary);
     font-family: var(--font-family);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    min-width: 140px;
+    width: 100%;
+    color-scheme: dark;
 }
 
-.period-group select:focus {
+.period-selector input[type="month"]:focus {
     outline: none;
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
+.period-selector input[type="month"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
 .period-display {
-    margin-left: auto;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(99, 102, 241, 0.1);
-    border-radius: var(--radius-sm);
-    color: var(--accent-primary);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding: var(--spacing-sm) 0;
 }
 
 .period-display strong {
-    color: var(--text-primary);
+    color: var(--accent-primary);
+}
+
+/* Input Rows - Mobile First */
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
 }
 
 /* Modified Preview */
@@ -363,29 +362,25 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    margin-top: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: var(--radius-sm);
-    opacity: 0.5;
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    margin-top: var(--spacing-xs);
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+    opacity: 0.6;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
 }
 
 .modified-preview.active {
     opacity: 1;
-    transform: translateX(4px);
+    color: var(--positive);
 }
 
 .preview-label {
-    font-size: 0.75rem;
-    color: var(--text-tertiary);
+    color: inherit;
 }
 
 .preview-value {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--positive);
+    font-weight: 600;
+    color: inherit;
 }
 
 /* Apply Section */
@@ -393,25 +388,28 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
-    margin-top: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
     padding-top: var(--spacing-lg);
     border-top: 1px solid var(--glass-border);
+    flex-wrap: wrap;
 }
 
 .btn-apply {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: var(--spacing-md) var(--spacing-lg);
     background: var(--accent-gradient);
     border: none;
     border-radius: var(--radius-md);
     color: white;
     font-family: var(--font-family);
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+    flex: 1;
+    justify-content: center;
 }
 
 .btn-apply:hover:not(:disabled) {
@@ -425,13 +423,40 @@ body {
 }
 
 .btn-icon {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .apply-hint {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: var(--text-tertiary);
-    font-style: italic;
+    text-align: center;
+    width: 100%;
+}
+
+/* Desktop Enhancement */
+@media (min-width: 600px) {
+    .period-selector {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-lg);
+    }
+
+    .period-selector input[type="month"] {
+        width: auto;
+        min-width: 200px;
+    }
+
+    .period-display {
+        margin-left: auto;
+    }
+
+    .btn-apply {
+        flex: 0 0 auto;
+    }
+
+    .apply-hint {
+        width: auto;
+    }
 }
 
 /* Breakdown Section */

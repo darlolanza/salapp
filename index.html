@@ -39,39 +39,17 @@
                     Configuración
                 </h2>
 
-                <!-- Period Selector -->
+                <!-- Period Selector - Calendar Style -->
                 <div class="period-selector">
-                    <div class="period-group">
-                        <label for="periodoMes">Mes</label>
-                        <select id="periodoMes">
-                            <option value="1">Enero</option>
-                            <option value="2">Febrero</option>
-                            <option value="3">Marzo</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Mayo</option>
-                            <option value="6">Junio</option>
-                            <option value="7">Julio</option>
-                            <option value="8">Agosto</option>
-                            <option value="9">Septiembre</option>
-                            <option value="10">Octubre</option>
-                            <option value="11" selected>Noviembre</option>
-                            <option value="12">Diciembre</option>
-                        </select>
-                    </div>
-                    <div class="period-group">
-                        <label for="periodoAnio">Año</label>
-                        <select id="periodoAnio">
-                            <option value="2024">2024</option>
-                            <option value="2025" selected>2025</option>
-                            <option value="2026">2026</option>
-                        </select>
-                    </div>
+                    <label for="periodoMes">Período a calcular</label>
+                    <input type="month" id="periodoMes" value="2025-11" min="2024-01" max="2026-12">
                     <div class="period-display" id="periodoDisplay">
                         📅 Calculando: <strong>Noviembre 2025</strong>
                     </div>
                 </div>
 
-                <div class="input-grid">
+                <!-- Row 1: Básicos -->
+                <div class="input-row">
                     <div class="input-group with-preview">
                         <label for="sueldoBasico">Sueldo Básico</label>
                         <div class="input-wrapper">
@@ -81,13 +59,6 @@
                         <div class="modified-preview" id="previewBasico">
                             <span class="preview-label">Con aumento:</span>
                             <span class="preview-value" id="previewBasicoValue">$447.660,48</span>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label for="antiguedad">Años de Antigüedad</label>
-                        <div class="input-wrapper years">
-                            <input type="number" id="antiguedad" value="5" min="0" max="35">
-                            <span class="unit">años</span>
                         </div>
                     </div>
                     <div class="input-group with-preview">
@@ -101,6 +72,28 @@
                             <span class="preview-value" id="previewComisarioValue">$761.420,03</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- Row 2: Antigüedad + Porcentaje -->
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="antiguedad">Años de Antigüedad</label>
+                        <div class="input-wrapper years">
+                            <input type="number" id="antiguedad" value="5" min="0" max="35">
+                            <span class="unit">años</span>
+                        </div>
+                    </div>
+                    <div class="input-group highlight">
+                        <label for="porcentajeAumento">% Aumento</label>
+                        <div class="input-wrapper percentage">
+                            <input type="number" id="porcentajeAumento" value="0.00" step="0.01" min="0" max="100">
+                            <span class="unit">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Dto 277 + Seguro -->
+                <div class="input-row">
                     <div class="input-group">
                         <label for="dto277">Dto. N° 277</label>
                         <div class="input-wrapper">
@@ -115,21 +108,13 @@
                             <input type="number" id="seguroVida" value="4375" step="0.01">
                         </div>
                     </div>
-                    <div class="input-group highlight">
-                        <label for="porcentajeAumento">Modificador de Aumento</label>
-                        <div class="input-wrapper percentage">
-                            <input type="number" id="porcentajeAumento" value="0.00" step="0.01" min="0" max="100">
-                            <span class="unit">%</span>
-                        </div>
-                        <span class="input-hint">Aplica sobre Básico y Haber Comisario</span>
-                    </div>
                 </div>
 
                 <!-- Apply Button -->
                 <div class="apply-section">
                     <button id="btnAplicarAumento" class="btn-apply" disabled>
                         <span class="btn-icon">✓</span>
-                        Aplicar Aumento a Básicos
+                        Aplicar Aumento
                     </button>
                     <span class="apply-hint" id="applyHint">Ajusta el % de aumento para habilitar</span>
                 </div>
