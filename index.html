@@ -40,41 +40,38 @@
                 </h2>
 
                 <!-- Period Selector -->
-                <div class="period-row">
-                    <div class="period-controls">
-                        <div class="period-group">
-                            <label for="periodoMes">Mes</label>
-                            <select id="periodoMes">
-                                <option value="1">Enero</option>
-                                <option value="2">Febrero</option>
-                                <option value="3">Marzo</option>
-                                <option value="4">Abril</option>
-                                <option value="5">Mayo</option>
-                                <option value="6">Junio</option>
-                                <option value="7">Julio</option>
-                                <option value="8">Agosto</option>
-                                <option value="9">Septiembre</option>
-                                <option value="10">Octubre</option>
-                                <option value="11" selected>Noviembre</option>
-                                <option value="12">Diciembre</option>
-                            </select>
-                        </div>
-                        <div class="period-group">
-                            <label for="periodoAnio">Año</label>
-                            <select id="periodoAnio">
-                                <option value="2024">2024</option>
-                                <option value="2025" selected>2025</option>
-                                <option value="2026">2026</option>
-                            </select>
-                        </div>
+                <div class="period-selector">
+                    <div class="period-group">
+                        <label for="periodoMes">Mes</label>
+                        <select id="periodoMes">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11" selected>Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="period-group">
+                        <label for="periodoAnio">Año</label>
+                        <select id="periodoAnio">
+                            <option value="2024">2024</option>
+                            <option value="2025" selected>2025</option>
+                            <option value="2026">2026</option>
+                        </select>
                     </div>
                     <div class="period-display" id="periodoDisplay">
                         📅 Calculando: <strong>Noviembre 2025</strong>
                     </div>
                 </div>
 
-                <!-- Main Inputs Row -->
-                <div class="input-row-main">
+                <div class="input-grid">
                     <div class="input-group with-preview">
                         <label for="sueldoBasico">Sueldo Básico</label>
                         <div class="input-wrapper">
@@ -82,7 +79,8 @@
                             <input type="number" id="sueldoBasico" value="447660.48" step="0.01">
                         </div>
                         <div class="modified-preview" id="previewBasico">
-                            Con aumento: <span class="preview-value" id="previewBasicoValue">$447.660,48</span>
+                            <span class="preview-label">Con aumento:</span>
+                            <span class="preview-value" id="previewBasicoValue">$447.660,48</span>
                         </div>
                     </div>
                     <div class="input-group">
@@ -99,7 +97,8 @@
                             <input type="number" id="haberComisario" value="761420.03" step="0.01">
                         </div>
                         <div class="modified-preview" id="previewComisario">
-                            Con aumento: <span class="preview-value" id="previewComisarioValue">$761.420,03</span>
+                            <span class="preview-label">Con aumento:</span>
+                            <span class="preview-value" id="previewComisarioValue">$761.420,03</span>
                         </div>
                     </div>
                     <div class="input-group">
@@ -109,10 +108,6 @@
                             <input type="number" id="dto277" value="80000" step="0.01">
                         </div>
                     </div>
-                </div>
-
-                <!-- Secondary Inputs Row -->
-                <div class="input-row-secondary">
                     <div class="input-group">
                         <label for="seguroVida">Seguro de Vida</label>
                         <div class="input-wrapper">
@@ -120,7 +115,7 @@
                             <input type="number" id="seguroVida" value="4375" step="0.01">
                         </div>
                     </div>
-                    <div class="input-group highlight modificador-box">
+                    <div class="input-group highlight">
                         <label for="porcentajeAumento">Modificador de Aumento</label>
                         <div class="input-wrapper percentage">
                             <input type="number" id="porcentajeAumento" value="0.00" step="0.01" min="0" max="100">
@@ -130,8 +125,8 @@
                     </div>
                 </div>
 
-                <!-- Apply Button Row -->
-                <div class="apply-row">
+                <!-- Apply Button -->
+                <div class="apply-section">
                     <button id="btnAplicarAumento" class="btn-apply" disabled>
                         <span class="btn-icon">✓</span>
                         Aplicar Aumento a Básicos
