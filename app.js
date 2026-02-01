@@ -37,6 +37,11 @@ const MONTHLY_DATA = [
 
 // DOM Elements
 const elements = {
+    // Period selectors
+    periodoMes: document.getElementById('periodoMes'),
+    periodoAnio: document.getElementById('periodoAnio'),
+    periodoDisplay: document.getElementById('periodoDisplay'),
+
     // Inputs
     sueldoBasico: document.getElementById('sueldoBasico'),
     antiguedad: document.getElementById('antiguedad'),
@@ -44,6 +49,16 @@ const elements = {
     dto277: document.getElementById('dto277'),
     seguroVida: document.getElementById('seguroVida'),
     porcentajeAumento: document.getElementById('porcentajeAumento'),
+
+    // Preview elements
+    previewBasico: document.getElementById('previewBasico'),
+    previewBasicoValue: document.getElementById('previewBasicoValue'),
+    previewComisario: document.getElementById('previewComisario'),
+    previewComisarioValue: document.getElementById('previewComisarioValue'),
+
+    // Apply button
+    btnAplicarAumento: document.getElementById('btnAplicarAumento'),
+    applyHint: document.getElementById('applyHint'),
 
     // Values display
     valBasico: document.getElementById('val-basico'),
@@ -64,6 +79,12 @@ const elements = {
     totalDescuentos: document.getElementById('total-descuentos'),
     sueldoNeto: document.getElementById('sueldo-neto'),
 };
+
+// Month names for display
+const MONTH_NAMES = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+];
 
 // Chart instance
 let evolutionChart = null;
@@ -98,6 +119,80 @@ function updateValue(element, value, isNegative = false) {
             element.classList.remove('value-updating');
         }, 300);
     }
+}
+
+/**
+ * Update period display
+ */
+function updatePeriodDisplay() {
+    const mes = parseInt(elements.periodoMes.value);
+    const anio = elements.periodoAnio.value;
+    const monthName = MONTH_NAMES[mes - 1];
+    elements.periodoDisplay.innerHTML = `📅 Calculando: <strong>${monthName} ${anio}</strong>`;
+}
+
+/**
+ * Update preview values for modified basics
+ */
+function updatePreviews() {
+    const basicoBase = parseFloat(elements.sueldoBasico.value) || 0;
+    const haberComisarioBase = parseFloat(elements.haberComisario.value) || 0;
+    const porcentaje = parseFloat(elements.porcentajeAumento.value) || 0;
+
+    const multiplier = 1 + (porcentaje / 100);
+    const basicoModificado = basicoBase * multiplier;
+    const comisarioModificado = haberComisarioBase * multiplier;
+
+    // Update preview values
+    elements.previewBasicoValue.textContent = formatCurrency(basicoModificado);
+    elements.previewComisarioValue.textContent = formatCurrency(comisarioModificado);
+
+    // Toggle active state based on percentage
+    const isActive = porcentaje > 0;
+    elements.previewBasico.classList.toggle('active', isActive);
+    elements.previewComisario.classList.toggle('active', isActive);
+
+    // Enable/disable apply button
+    elements.btnAplicarAumento.disabled = !isActive;
+    if (isActive) {
+        elements.applyHint.textContent = `Aplicar +${porcentaje.toFixed(2)}% a los básicos`;
+    } else {
+        elements.applyHint.textContent = 'Ajusta el % de aumento para habilitar';
+    }
+}
+
+/**
+ * Apply the percentage increase to base values
+ */
+function applyIncrease() {
+    const basicoBase = parseFloat(elements.sueldoBasico.value) || 0;
+    const haberComisarioBase = parseFloat(elements.haberComisario.value) || 0;
+    const porcentaje = parseFloat(elements.porcentajeAumento.value) || 0;
+
+    if (porcentaje <= 0) return;
+
+    const multiplier = 1 + (porcentaje / 100);
+    const nuevoBasico = basicoBase * multiplier;
+    const nuevoComisario = haberComisarioBase * multiplier;
+
+    // Update input values
+    elements.sueldoBasico.value = nuevoBasico.toFixed(2);
+    elements.haberComisario.value = nuevoComisario.toFixed(2);
+
+    // Reset percentage to 0
+    elements.porcentajeAumento.value = '0.00';
+
+    // Recalculate and update previews
+    calculateSalary();
+    updatePreviews();
+
+    // Visual feedback
+    elements.sueldoBasico.classList.add('value-updating');
+    elements.haberComisario.classList.add('value-updating');
+    setTimeout(() => {
+        elements.sueldoBasico.classList.remove('value-updating');
+        elements.haberComisario.classList.remove('value-updating');
+    }, 300);
 }
 
 /**
@@ -157,6 +252,9 @@ function calculateSalary() {
     updateValue(elements.subtotalNoRemunerativo, subtotalNoRemunerativo);
     updateValue(elements.totalDescuentos, -totalDescuentos, true);
     updateValue(elements.sueldoNeto, sueldoNeto);
+
+    // Update previews
+    updatePreviews();
 
     return { subtotalRemunerativo, subtotalNoRemunerativo, totalDescuentos, sueldoNeto };
 }
@@ -284,6 +382,13 @@ function initChart() {
  * Initialize the app
  */
 function init() {
+    // Period selector listeners
+    elements.periodoMes.addEventListener('change', updatePeriodDisplay);
+    elements.periodoAnio.addEventListener('change', updatePeriodDisplay);
+
+    // Apply button listener
+    elements.btnAplicarAumento.addEventListener('click', applyIncrease);
+
     // Add event listeners for all inputs
     elements.sueldoBasico.addEventListener('input', calculateSalary);
     elements.antiguedad.addEventListener('input', calculateSalary);
@@ -294,6 +399,9 @@ function init() {
 
     // Initial calculation
     calculateSalary();
+
+    // Initialize previews
+    updatePreviews();
 
     // Initialize chart
     initChart();
