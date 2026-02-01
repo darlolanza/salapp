@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Sueldo Neto | TDF 2025</title>
+    <meta name="description"
+        content="Calculadora interactiva de sueldo neto para empleados públicos de Tierra del Fuego. Visualiza la composición de tu salario y deducciones.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">💰</div>
+                    <div class="logo-text">
+                        <h1>Calculadora de Sueldo</h1>
+                        <span class="subtitle">Administración Pública TDF · 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="input-section glass-card">
+                <h2 class="section-title">
+                    <span class="icon">⚙️</span>
+                    Configuración
+                </h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="sueldoBasico">Sueldo Básico</label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="sueldoBasico" value="447660.48" step="0.01">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="antiguedad">Años de Antigüedad</label>
+                        <div class="input-wrapper years">
+                            <input type="number" id="antiguedad" value="5" min="0" max="35">
+                            <span class="unit">años</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="haberComisario">Haber Comisario (Ref.)</label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="haberComisario" value="761420.03" step="0.01">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="dto277">Dto. N° 277</label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="dto277" value="80000" step="0.01">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="seguroVida">Seguro de Vida</label>
+                        <div class="input-wrapper">
+                            <span class="currency">$</span>
+                            <input type="number" id="seguroVida" value="4375" step="0.01">
+                        </div>
+                    </div>
+                    <div class="input-group highlight">
+                        <label for="porcentajeAumento">Modificador de Aumento</label>
+                        <div class="input-wrapper percentage">
+                            <input type="number" id="porcentajeAumento" value="0.00" step="0.01" min="0" max="100">
+                            <span class="unit">%</span>
+                        </div>
+                        <span class="input-hint">Aplica sobre Básico y Haber Comisario</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Salary Breakdown -->
+            <section class="breakdown-section">
+                <div class="breakdown-columns">
+                    <!-- Remunerative Concepts -->
+                    <div class="glass-card breakdown-card">
+                        <h2 class="section-title positive">
+                            <span class="icon">📈</span>
+                            Conceptos Remunerativos
+                        </h2>
+                        <div class="concept-list">
+                            <div class="concept-item" data-code="1">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 1</span>
+                                    <span class="concept-name">Sueldo Básico</span>
+                                    <span class="concept-formula">Asignado por Escala</span>
+                                </div>
+                                <span class="concept-value" id="val-basico">$0</span>
+                            </div>
+                            <div class="concept-item" data-code="11">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 11</span>
+                                    <span class="concept-name">Antigüedad</span>
+                                    <span class="concept-formula">2% por año × Básico</span>
+                                </div>
+                                <span class="concept-value" id="val-antiguedad">$0</span>
+                            </div>
+                            <div class="concept-item" data-code="45">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 45</span>
+                                    <span class="concept-name">Título Ed. Superior</span>
+                                    <span class="concept-formula">35% × Básico</span>
+                                </div>
+                                <span class="concept-value" id="val-titulo">$0</span>
+                            </div>
+                            <div class="concept-item" data-code="55">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 55</span>
+                                    <span class="concept-name">Suplemento Zona</span>
+                                    <span class="concept-formula">100% × (Básico + Antig. + Título)</span>
+                                </div>
+                                <span class="concept-value" id="val-zona">$0</span>
+                            </div>
+                            <div class="concept-item" data-code="72">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 72</span>
+                                    <span class="concept-name">Mayor Dedicación</span>
+                                    <span class="concept-formula">44.42% × Básico</span>
+                                </div>
+                                <span class="concept-value" id="val-dedicacion">$0</span>
+                            </div>
+                            <div class="concept-item" data-code="111">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 111</span>
+                                    <span class="concept-name">Dto. N° 277</span>
+                                    <span class="concept-formula">Monto Variable</span>
+                                </div>
+                                <span class="concept-value" id="val-dto277">$80.000,00</span>
+                            </div>
+                            <div class="concept-item" data-code="473">
+                                <div class="concept-info">
+                                    <span class="concept-code">Cód. 473</span>
+                                    <span class="concept-name">Supl. Apoyo</span>
+                                    <span class="concept-formula">49.97% × Básico</span>
+                                </div>
+                                <span class="concept-value" id="val-apoyo">$0</span>
+                            </div>
+                        </div>
+                        <div class="subtotal">
+                            <span>Subtotal Remunerativo</span>
+                            <span class="subtotal-value" id="subtotal-remunerativo">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Non-Remunerative & Deductions -->
+                    <div class="right-column">
+                        <!-- Non-Remunerative -->
+                        <div class="glass-card breakdown-card">
+                            <h2 class="section-title neutral">
+                                <span class="icon">📊</span>
+                                No Remunerativo
+                            </h2>
+                            <div class="concept-list">
+                                <div class="concept-item" data-code="641">
+                                    <div class="concept-info">
+                                        <span class="concept-code">Cód. 641</span>
+                                        <span class="concept-name">Bloqueo Título</span>
+                                        <span class="concept-formula">(35% × Haber Comisario) × 2</span>
+                                    </div>
+                                    <span class="concept-value" id="val-bloqueo">$0</span>
+                                </div>
+                            </div>
+                            <div class="subtotal">
+                                <span>Total No Remunerativo</span>
+                                <span class="subtotal-value" id="subtotal-no-remunerativo">$0</span>
+                            </div>
+                        </div>
+
+                        <!-- Deductions -->
+                        <div class="glass-card breakdown-card deductions">
+                            <h2 class="section-title negative">
+                                <span class="icon">📉</span>
+                                Descuentos
+                            </h2>
+                            <div class="concept-list">
+                                <div class="concept-item" data-code="701">
+                                    <div class="concept-info">
+                                        <span class="concept-code">Cód. 701</span>
+                                        <span class="concept-name">Jubilación C.P.S.P.T.F</span>
+                                        <span class="concept-formula">14% × Subtotal Remunerativo</span>
+                                    </div>
+                                    <span class="concept-value negative" id="val-jubilacion">-$0</span>
+                                </div>
+                                <div class="concept-item" data-code="719">
+                                    <div class="concept-info">
+                                        <span class="concept-code">Cód. 719</span>
+                                        <span class="concept-name">Obra Social O.S.P.T.F.</span>
+                                        <span class="concept-formula">3% × Subtotal Remunerativo</span>
+                                    </div>
+                                    <span class="concept-value negative" id="val-obrasocial">-$0</span>
+                                </div>
+                                <div class="concept-item" data-code="773">
+                                    <div class="concept-info">
+                                        <span class="concept-code">Cód. 773</span>
+                                        <span class="concept-name">Seguro de Vida</span>
+                                        <span class="concept-formula">Monto Fijo</span>
+                                    </div>
+                                    <span class="concept-value negative" id="val-seguro">-$0</span>
+                                </div>
+                            </div>
+                            <div class="subtotal negative">
+                                <span>Total Descuentos</span>
+                                <span class="subtotal-value" id="total-descuentos">-$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Net Salary Result -->
+            <section class="result-section glass-card">
+                <div class="result-content">
+                    <div class="result-label">
+                        <span class="icon">🎯</span>
+                        Sueldo Neto (Bolsillo)
+                    </div>
+                    <div class="result-formula">
+                        (Remunerativo + No Remunerativo) − Descuentos
+                    </div>
+                    <div class="result-value" id="sueldo-neto">
+                        $0
+                    </div>
+                </div>
+            </section>
+
+            <!-- Monthly Evolution Chart -->
+            <section class="chart-section glass-card">
+                <h2 class="section-title">
+                    <span class="icon">📅</span>
+                    Evolución Mensual 2025
+                </h2>
+                <div class="chart-container">
+                    <canvas id="evolutionChart"></canvas>
+                </div>
+                <div class="chart-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Incremento Anual</span>
+                        <span class="stat-value positive">+25.55%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sueldo Mínimo</span>
+                        <span class="stat-value">$1.611.504</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sueldo Máximo</span>
+                        <span class="stat-value">$2.023.274</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Datos basados en recibos de sueldo reales · Administración Pública de Tierra del Fuego · 2025</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
